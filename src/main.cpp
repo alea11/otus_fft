@@ -10,7 +10,6 @@
 #include <iostream>
 #include <fstream>
 #include <filesystem>
-//#include <stdint.h>
 
 void InputHarmonics(std::vector<Harmonic>& harmonics, long size);
 bool Load(std::string filename, std::vector<double>& values);
@@ -19,8 +18,8 @@ void Save(std::string filename, const std::vector<double>& values);
 void Save(std::string filename, std::vector<ComplexDigit>& values, bool expMode = false);
 
 const std::string SignalFName("Signal");
-const std::string SpetrResFName("SpetrResFName");
-const std::string SignalResFName("SignalResFName");
+const std::string SpetrResFName("SpetrRes");
+const std::string SignalResFName("SignalRes");
 
 int main(int argc, char* argv[]) 
 {
@@ -33,8 +32,7 @@ int main(int argc, char* argv[])
     ArgumentsParser ap (argc, argv);
     std::string fname;
     if (ap.GetParam("-signalFName", fname) == 0 && Load(fname, signal.Points))
-    {
-        
+    {        
         long s = signal.Points.size();
         std::cout << " s " <<  s << std::endl;
         while (s > 0)
@@ -114,9 +112,6 @@ int main(int argc, char* argv[])
             Save(SignalResFName, calc.BackResult);
     }
         
-        
-    
-
     std::cout << "To exit, press 'Enter'" << std::endl;
     std::cin.clear();
     std::cin.ignore(222222, '\n');
@@ -132,7 +127,7 @@ template<typename T> bool inpValue(T& val)
     if(std::cin.fail())
     {
         std::cin.clear();
-        std::cin.ignore();//222222, '\n'
+        std::cin.ignore();
         return false;
     }
     return true;
@@ -224,7 +219,7 @@ void Save(std::string filename, const std::vector<double>& values)
 
 }
 
-void Save(std::string filename,  std::vector<ComplexDigit>& values, bool expMode) //const
+void Save(std::string filename,  std::vector<ComplexDigit>& values, bool expMode) 
 {
     std::cout << "Saving ..." << std::endl;
     std::ofstream out_file{ filename, std::ios_base::trunc }; // открываем файл на перезапись

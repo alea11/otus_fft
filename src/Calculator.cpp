@@ -53,8 +53,6 @@ void Calculator::BackCalc(const std::vector<ComplexDigit>& spectr)
     {
         BackResult[i].Conjugate();
     }
-
-    //IsBackCalculated = true;
 }
     
 void Calculator::CalcFFT(std::vector<ComplexDigit>& arr)
@@ -80,9 +78,7 @@ void Calculator::CalcFFT(std::vector<ComplexDigit>& arr)
         // "инвертированный" уровень
         int invp = _pow - p - 1;
 
-        // цикл по элементам массива (по 2)
-        // TODO: здесь порядок следования иттераций - не важен, обрабатываемые пары элементов на каждом шаге - не пересекаются с элементами на других шагах.
-        // т.е. можно будет запустить параллельное вычисление (несколько блоков)
+        // цикл по элементам массива (по 2)        
         for (long ii = 0; ii < _size / 2; ii++)
         {
             // индексы 2-х операндов определяем: общий индекс цикла (битовое представление) разрываем в позиции номера уровня.
@@ -101,6 +97,8 @@ void Calculator::CalcFFT(std::vector<ComplexDigit>& arr)
         }
     }
 }
+
+
 
 void Calculator::Butterfly(ComplexDigit& a, ComplexDigit& b, const ComplexDigit& w)
 {
@@ -145,9 +143,9 @@ void Calculator::CreateSwapMasks(int n)
         low = (01u << n) - 1;
     
         // размножение маски с учетом сдвигов масок предыдущих уровней
-        for (int i = _swapMasks.size() - 1; i >= 0; i--) // если тип счетчика указать auto - то будет unsigned ..., и сравнение с 0 - не работает
+        for(auto im = _swapMasks.rend(); im!=_swapMasks.rbegin(); --im)
         {
-            low |= low << _swapMasks[i].Offset;
+            low |= low << (*im).Offset;
         }
 
         m.Low = low;

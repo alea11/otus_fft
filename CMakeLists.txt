@@ -3,16 +3,16 @@ cmake_minimum_required(VERSION 3.12)
 project(fft)
 
 add_executable(fft
-    main.cpp
-    Harmonic.hpp
-    ComplexDigit.hpp
-    Signal.hpp
-    Signal.cpp
-    Calculator.hpp
-    Calculator.cpp
-    ReverceMask.hpp
-    ArgumentsParser.hpp
-    ArgumentsParser.cpp
+    src/main.cpp
+    src/Harmonic.hpp
+    src/ComplexDigit.hpp
+    src/Signal.hpp
+    src/Signal.cpp
+    src/Calculator.hpp
+    src/Calculator.cpp
+    src/ReverceMask.hpp
+    src/ArgumentsParser.hpp
+    src/ArgumentsParser.cpp
 
 )
 

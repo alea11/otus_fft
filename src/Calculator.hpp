@@ -2,9 +2,7 @@
 
 #include "ComplexDigit.hpp"
 #include "ReverceMask.hpp"
-
 #include <vector>
-//#include <stdint.h>
 
 class Calculator
 {

@@ -1,8 +1,5 @@
 
 #include "Signal.hpp"
-//#include "Harmonic.hpp"
-
-//#include <vector>
 #include <cmath>
 
 Signal::Signal()
@@ -48,7 +45,6 @@ void Signal::ApplyHarmonic(const Harmonic& harm)
         }
         
     }
-
 
 }
 
