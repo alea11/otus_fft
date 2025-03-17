@@ -4,7 +4,6 @@
 #include "Calculator.hpp"
 #include "ArgumentsParser.hpp"
 
-#include <iostream>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -72,8 +71,8 @@ int main(int argc, char* argv[])
                 
                 // формируем сигнал из гармоник. ( можно формировать и другим способом, напр. вводом конкретных значений, не обязательно гармонических функций) 
                 for (const Harmonic& harm : harmonics)
-                {
-                    signal.ApplyHarmonic(harm);                                   
+                {                    
+                    signal.ApplyHarmonic(harm);                                               
                 }                
             }
         }
@@ -85,28 +84,35 @@ int main(int argc, char* argv[])
     }
     else
     {
-        char c;
+        char c = 'n';
         std::cout << "if you want to save signal - press 'y'" <<  std::endl;
-        std::cin >> c;
-        if(c == 'Y' || c == 'y')
-            Save(SignalFName, signal.Points);
+
+        std::cin.clear();
+        std::cin.ignore(222222, '\n');
+        std::cin >> c;        
+
+        if(c == 'Y' || c == 'y')        
+            Save(SignalFName, signal.Points);        
         
         Calculator calc(pow);
-        
+
         // преобразование в спектр
         calc.DirectCalc(signal.Points);
         
         c = 'n';
         std::cout << "if you want to save result of Direct FFT - press 'y'" <<  std::endl;
+        std::cin.clear();
+        std::cin.ignore(222222, '\n');
         std::cin >> c;
         if(c == 'Y' || c == 'y')
             Save(SpetrResFName, calc.DirectResult, true);
-        
+                
         //обратное преобразование (из спектра в сигнал)
         calc.BackCalc(calc.DirectResult);
-
         c = 'n';
         std::cout << "if you want to save result of Back FFT - press 'y'" <<  std::endl;
+        std::cin.clear();
+        std::cin.ignore(222222, '\n');
         std::cin >> c;
         if(c == 'Y' || c == 'y')
             Save(SignalResFName, calc.BackResult);
@@ -115,8 +121,7 @@ int main(int argc, char* argv[])
     std::cout << "To exit, press 'Enter'" << std::endl;
     std::cin.clear();
     std::cin.ignore(222222, '\n');
-    std::cin.get();   
-
+    std::cin.get();
     
     return 0;
 }
@@ -145,9 +150,9 @@ void InputHarmonics(std::vector<Harmonic>& harmonics, long size)
         Harmonic harm;
         
         if(!constCompAdded)
-            std::cout << "Enter Period (double) for harmonic: "  << cnt << ", less than " << size << " (if 0 then a constant component is specified)" <<  std::endl;
+            std::cout << "Enter Period (double) for harmonic "  << cnt << ", less than " << size << " (if 0 then a constant component is specified)" <<  std::endl;
         else
-            std::cout << "Enter Period (double) for harmonic: "  << cnt << ", greater than 1, less than " << size << std::endl;
+            std::cout << "Enter Period (double) for harmonic "  << cnt << ", greater than 1, less than " << size << std::endl;
         if( !inpValue(harm.Period))
             break;
         if((constCompAdded && harm.Period < 2) || harm.Period > size)
@@ -156,12 +161,12 @@ void InputHarmonics(std::vector<Harmonic>& harmonics, long size)
             continue;
         }        
 
-        std::cout << "Enter Amplitude (double) for harmonic: "  << cnt <<  std::endl;
+        std::cout << "Enter Amplitude (double) for harmonic "  << cnt <<  std::endl;
         if( !inpValue(harm.Amplitude))
             break;
         if(harm.Period != 0)
         {
-            std::cout << "Enter Phase (double) for harmonic: "  << cnt <<  std::endl;
+            std::cout << "Enter Phase (double) for harmonic "  << cnt <<  std::endl;
             if( !inpValue(harm.Phase))
                 break;
         }
@@ -170,7 +175,7 @@ void InputHarmonics(std::vector<Harmonic>& harmonics, long size)
             constCompAdded = true;
         }
         
-        harmonics.push_back(harm);
+        harmonics.push_back(harm);        
         cnt++;
     } 
 }

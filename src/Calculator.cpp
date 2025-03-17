@@ -145,7 +145,7 @@ void Calculator::CreateSwapMasks(int n)
         // размножение маски с учетом сдвигов масок предыдущих уровней
         for(auto im = _swapMasks.rend(); im!=_swapMasks.rbegin(); --im)
         {
-            low |= low << (*im).Offset;
+            low |= low << (*(im -1)).Offset;
         }
 
         m.Low = low;
