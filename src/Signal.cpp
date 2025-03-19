@@ -1,6 +1,6 @@
 
 #include "Signal.hpp"
-#include <cmath>
+
 
 Signal::Signal()
 {

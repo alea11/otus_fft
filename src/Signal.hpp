@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <stdint.h>
+#include <cmath>
+
 
 class Signal
 {
