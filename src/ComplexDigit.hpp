@@ -27,10 +27,10 @@ public:
         Im = module * sin(arg);
     }
 
-    double GetModule()
+    double GetModule() const
     { return sqrt(Re * Re + Im * Im); } 
 
-    double GetArgument()
+    double GetArgument() const
     { return atan2(Im, Re); }
 
     // Сопряжение

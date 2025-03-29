@@ -1,20 +1,18 @@
+
+
+#include <string>
+#include <vector>
+#include <iostream>
+
 #include "Harmonic.hpp"
 #include "ComplexDigit.hpp"
 #include "Signal.hpp"
 #include "Calculator.hpp"
 #include "ArgumentsParser.hpp"
-
-#include <string>
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include <filesystem>
+#include "StorageOperations.cpp"
 
 void InputHarmonics(std::vector<Harmonic>& harmonics, long size);
-bool Load(std::string filename, std::vector<double>& values);
 
-void Save(std::string filename, const std::vector<double>& values);
-void Save(std::string filename, std::vector<ComplexDigit>& values, bool expMode = false);
 
 const std::string SignalFName("Signal");
 const std::string SpetrResFName("SpetrRes");
@@ -30,7 +28,7 @@ int main(int argc, char* argv[])
 
     ArgumentsParser ap (argc, argv);
     std::string fname;
-    if (ap.GetParam("-signalFName", fname) == 0 && Load(fname, signal.Points))
+    if (ap.GetParam("-signalFName", fname) == 0 &&  StorageOperations::Load(fname, signal.Points))
     {        
         long s = signal.Points.size();
         std::cout << " s " <<  s << std::endl;
@@ -92,7 +90,7 @@ int main(int argc, char* argv[])
         std::cin >> c;        
 
         if(c == 'Y' || c == 'y')        
-            Save(SignalFName, signal.Points);        
+            StorageOperations::Save(SignalFName, signal.Points);        
         
         Calculator calc(pow);
 
@@ -105,7 +103,7 @@ int main(int argc, char* argv[])
         std::cin.ignore(222222, '\n');
         std::cin >> c;
         if(c == 'Y' || c == 'y')
-            Save(SpetrResFName, calc.DirectResult, true);
+            StorageOperations::Save(SpetrResFName, calc.DirectResult, true);
                 
         //обратное преобразование (из спектра в сигнал)
         calc.BackCalc(calc.DirectResult);
@@ -115,7 +113,7 @@ int main(int argc, char* argv[])
         std::cin.ignore(222222, '\n');
         std::cin >> c;
         if(c == 'Y' || c == 'y')
-            Save(SignalResFName, calc.BackResult);
+            StorageOperations::Save(SignalResFName, calc.BackResult, false);
     }
         
     std::cout << "To exit, press 'Enter'" << std::endl;
@@ -180,76 +178,3 @@ void InputHarmonics(std::vector<Harmonic>& harmonics, long size)
     } 
 }
 
-bool Load(std::string filename, std::vector<double>& values)
-{
-    std::cout << "Loading ..." << std::endl;
-    std::ifstream in_file{ filename }; // открываем файл на перезапись
-    if (!in_file.is_open()) 
-    {
-        std::cout << "Failed to open file: " << filename << "!" << std::endl;      
-        return false;  
-    }
-    else
-    {
-        double x;
-        while (in_file >> x )
-        {
-            values.push_back(x);
-        }
-        in_file.close();
-        std::cout << "... success"  << std::endl; 
-        return true;
-    }
-}
-
-
-
-void Save(std::string filename, const std::vector<double>& values)
-{
-    std::cout << "Saving ..." << std::endl;
-    std::ofstream out_file{ filename, std::ios_base::trunc }; // открываем файл на перезапись
-    if (!out_file.is_open()) 
-    {
-        std::cout << "Failed to open file for write: " << filename << "!" << std::endl;        
-    }
-    else
-    {
-        for (const double value : values)
-        {
-            out_file << value << std::endl;
-        }
-        out_file.close();
-        std::cout << "... success"  << std::endl;
-    }
-
-}
-
-void Save(std::string filename,  std::vector<ComplexDigit>& values, bool expMode) 
-{
-    std::cout << "Saving ..." << std::endl;
-    std::ofstream out_file{ filename, std::ios_base::trunc }; // открываем файл на перезапись
-    if (!out_file.is_open())
-    {
-        std::cout << "Failed to open file for write: " << filename << "!" << std::endl;
-    }
-    else
-    {
-        if (expMode)
-        {
-            for (  ComplexDigit& value : values)
-            {
-                out_file << value.GetModule() << " " << value.GetArgument() << std::endl;
-            }
-        }
-        else
-        {
-            for (const ComplexDigit& value : values)
-            {
-                out_file << value.Re << " " << value.Im << std::endl;
-            }
-        }
-        
-        out_file.close();
-        std::cout << "... success"  << std::endl;
-    }
-}
