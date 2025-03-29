@@ -15,7 +15,7 @@ void InputHarmonics(std::vector<Harmonic>& harmonics, long size);
 
 
 const std::string SignalFName("Signal");
-const std::string SpetrResFName("SpetrRes");
+const std::string SpetrResFName("SpectrRes");
 const std::string SignalResFName("SignalRes");
 
 int main(int argc, char* argv[]) 
